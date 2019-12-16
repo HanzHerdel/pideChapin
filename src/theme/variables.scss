@@ -1,8 +1,14 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
-/** Ionic CSS Variables **/
+/** Ionic CSS Variables  **/
 :root {
+  --ion-color-amarillo:#ffc800;
+  --ion-color-amarillo-contrast: #ffffff;
+  --ion-color-amarillo-rgb:255, 200, 0;
+  --ion-color-amarillo-contrast-rgb: 0, 0, 0;
+  --ion-color-amarillo-shade:#e0b000;
+  --ion-color-amarillo-tint:#ffce1a;
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;

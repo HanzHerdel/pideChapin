@@ -1,0 +1,45 @@
+.datosOrden > label >span{
+	padding-right: 12px;
+}
+.totalItem{
+	width: 30%;
+	min-width:110px;
+}
+.divTiempo{
+	border-radius: 5px;
+	padding: 10px !important;
+	text-align: center;
+	color: black;
+	font-size:130%;
+	float: right;    
+	margin: 0 0 5px 9px;
+}
+.etiquetaTiempo{
+    font-size: 10px;
+    display: block;
+    margin-bottom: 3px;
+    font-style: italic;
+}
+.tiempoBajo{
+	//border: 1px solid #cae299;
+    background: #c6ffaf;
+}
+.tiempoMedio{
+    //border: 1px solid #e2da99;
+    background: #fff6af;
+}
+.tiempoAlto{
+  	//border: 1px solid #e2a999;
+    background: #ffb0af;
+}
+.datosOrden{
+	color: black;
+}
+.detalleOrden{
+	font-size: 13px;
+    text-indent: 12px;
+}
+.totalOrden{
+	font-size: 18px;
+	color: black;
+}

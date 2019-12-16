@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+  	    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Crear Ordenes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="contenedorDeRestaurantes" *ngIf="esPideChapin()" >
+			<div *ngFor="let restaurante of restaurantes |async">			    				    		
+				<button (click)="restauranteSeleccionado(restaurante)" [ngClass]=" (restauranteSelectId==restaurante.id) ? 'restauranteSeleccionado' :'' " class="restauranteOpcion ion-text-capitalize" >{{restaurante.nombre}}</button>
+			</div>
+	</div>
+	<ion-card>
+		<ion-card-content>
+			<ion-card>			
+			  <ion-card-header>	    
+			    <div class="contenedorDeOpciones">
+			    	<div *ngFor="let tipo of tiposItems; let last=last ">			    				    		
+			    		<button  [ngClass]=" (_tipoSeleccionado==tipo) ? 'opcionSeleccionada':''"  (click)="tipoSeleccionado(tipo)" class="opcion ion-text-capitalize" >{{tipo}}</button>
+			    		<button *ngIf="last" (click)="tipoSeleccionado('')" class="opcion" style="background: #009dd2;">Ocultar</button>
+			    	</div>
+			    </div>
+			  </ion-card-header>
+			
+			  <ion-card-content>
+			  	<div class="contenedorDeItems">
+				  	<div *ngFor="let item of itemsSeleccionados" class="items">
+				    	<div class="contenedorImagen">					    		
+				    		<img src="{{item.urlImg}}"  class="imagenItem" >
+				    	</div>
+				    	<div class="test">
+
+					    	<label class="textoItem">
+					    		<h1>{{item.nombre}}</h1>
+					    		<p style="display: inline;">{{truncar(item.descripcion)}}</p>
+					    	</label>					    		
+					    	<h1 class="precioItem" >Q.{{item.valor}} </h1>
+					    	<button class="agregarItem"  (click)="agregarItem(item)" >+</button>
+
+				    	</div>
+				    </div>
+				</div>
+			  </ion-card-content>
+			
+			</ion-card>
+		</ion-card-content>
+		<div *ngIf="listaItems.length > 0">			
+			<div class="tituloContent">
+    			Orden:
+    		</div>
+    		<div *ngFor="let item of listaItems">    			
+    			<ion-item >
+    				<div class="opsCarrito">
+    					<button class="agregar" (click)="agregarItem(item)" >+</button>
+    					<button class="quitar" (click)="quitarItem(item)" >-</button>    					
+    				</div>
+    				<h2 style="margin: 5px;">{{item.cantidad}} x</h2>
+    				<ion-avatar style="margin: 5px;">
+    					<img src="{{item.urlImg}}">
+    				</ion-avatar>
+    				<ion-label>
+    					{{item.nombre}}: {{item.descripcion}}
+    					<div style="float:right">Costo:{{item.valor * item.cantidad}}</div>
+    				</ion-label>
+    			</ion-item>	
+    		</div>
+    		<div class="total">
+    			<h2>Total Q.{{totalLista()}}</h2>
+    		</div>
+
+		<form #ordenForm="ngForm" (ngSubmit)="crearOrden(ordenForm)" >
+			   		<div class="flexBox">
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+					    	<ion-label position="floating">
+					    		Nombre
+					    	</ion-label>
+				    		<ion-input [(ngModel)]="orden.nombre" name="nombre" type="text" #nombre="ngModel" required minLength="5" maxLength="50"></ion-input>
+					    </ion-item>
+				    		<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || ordenForm.submitted)" class="errMensajeInput">
+                        	<div *ngIf="nombre.hasError('minLenght')" >El nombre es demasiado corto</div>
+                        	<div *ngIf="nombre.hasError('required')" >El nombre es obligatorio</div>
+                    		</div>	
+			    		</div>
+			    		<div class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Dirección
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="orden.direccion" name="descripcion" type="text" #direccion="ngModel" required minLength="5" maxLength="125"></ion-input>
+						    </ion-item>
+    				    		<div *ngIf="direccion.invalid && (direccion.dirty || direccion.touched || ordenForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="direccion.hasError('minLenght')" >direccion es demasiada corta</div>
+                            	<div *ngIf="direccion.hasError('required')" >La direccion es obligatoria</div>
+                        		</div>	
+			    		</div>
+			    		<div class="campoSelec">
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Teléfono
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="orden.tel" name="tel" type="number" #tel="ngModel" required minLength="7" maxLength="125" required></ion-input>
+						    </ion-item>
+    				    		<div *ngIf="tel.invalid && (tel.dirty || tel.touched || ordenForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="tel.hasError('minLenght')" >El número es demasiado corta</div>
+                            	<div *ngIf="direccion.hasError('required')" >El número es obligatorio</div>
+                        		</div>	
+			    		</div>
+			    		<div  class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Comentarios
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="orden.comentarios" name="comentarios" type="text" #comentarios="ngModel" minLength="5" maxLength="200"></ion-input>
+						    </ion-item>
+			    		</div> 
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Estado
+						    	</ion-label>
+					    		<ion-select [(ngModel)]="orden.estado" name="estado"  #estado="ngModel"  interface="popover" required>
+							    	<ion-select-option *ngFor="let estado of estados" value='{{estado}}' >{{estado}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+			    		</div>  	    		
+			  		</div>
+		  		<ion-button style="float:right; " color="amarillo" type="submit" block>Crear Orden</ion-button> 
+	    	</form>
+		</div>    		
+	</ion-card>
+</ion-content>

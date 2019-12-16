@@ -1,0 +1,384 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>administracion</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- -------------- Usuarios ------------ -->
+<ion-content>
+	<ion-card  id="usuariosCard" class="tarjetas colapsar" >	
+	  <ion-card-header class="tarjetasAdmin" (click)="switch('usuariosCard')">
+	  	Usuarios
+	  </ion-card-header>			
+	  <ion-card-content text-center>
+    		<div class="tituloContent">
+    			Agregar Usuario:
+    		</div>	
+		   	  <form #usuarioForm="ngForm" (ngSubmit)="crearUsuario(usuarioForm)" >
+			   		<div class="flexBox">
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Correo
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.correo" name="correo" type="email" #correo="ngModel" required email maxLength="50"></ion-input>
+						    </ion-item>
+					    		<div *ngIf="correo.invalid && (correo.dirty || correo.touched || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div >Correo inválido</div>
+                        		</div>	
+			    		</div>
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Contraseña
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.password" name="password" #pass="ngModel"  type="password" required maxlength="15" minlength="6"></ion-input>
+						    </ion-item>	
+						    <div *ngIf="pass.invalid && (pass.dirty || pass.touched  || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="pass.hasError('required')" >Contraseña requerida</div>	                            		
+                        		<div *ngIf="pass.hasError('minlength')" >La contraseña debe ser mayor a 5 caracteres</div>
+                			</div>                            		
+                		</div>
+			    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Nombre
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.nombre" name="nombre" type="text" #nombre="ngModel"  maxlength="50" required></ion-input>
+						    </ion-item>	
+						    <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="nombre.hasError('required')" >Nombre requerido</div>
+                			</div>     
+			    		</div>
+			    		<div  class="campoTexto">    
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Apellido
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.apellido" value="" name="apellido" maxlength="50" type="text" ></ion-input>
+						    </ion-item>
+			    		</div>
+			    		<div  class="campoNum">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Telefono
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.tel" value="" name="tel" maxlength="12" inputmode="tel" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+						    </ion-item>	
+			    		</div>
+			    		<div  class="campoNum">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Móvil
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.movil" name="movil" #movil="ngModel" inputmode="tel" maxlength="12" minlength="7" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" required></ion-input>
+						    </ion-item>	
+						    <div *ngIf="movil.invalid && (movil.dirty || movil.touched || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="movil.hasError('required')" >Móvil requerido</div>
+                            	<div *ngIf="movil.hasError('minlength')" >El número es menor al minimo</div>
+                			</div>  
+			    		</div>
+			    		<div  class="campoTexto">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Dirección
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuario.dir" value="" name="dir" maxlength="50" type="text"></ion-input>
+						    </ion-item>	
+			    		</div>
+			    		<div  class="campoSelec">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Empresa
+						    	</ion-label>
+					    		<ion-select [(ngModel)]="usuario.empresa" name="empresa" #empresa="ngModel" interface="popover" required>
+							    <ion-select-option *ngFor="let empresa of empresas"  value='{{empresa.id}}'>{{empresa.nombre}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+						    <div *ngIf="empresa.invalid && (empresa.dirty || empresa.touched || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="empresa.hasError('required')" >Seleccione una empresa</div>
+                			</div>  
+			    		</div>
+			    		<div  class="campoSelec">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Permisos
+						    	</ion-label>
+					    		<ion-select  [(ngModel)]="usuario.permisos" name="permisos" #permisos="ngModel"  interface="popover" required>
+					    	<!-- 		<ion-select-option >Seleccione</ion-select-option> -->
+							    	<ion-select-option *ngFor="let t of tiposUsuario" value='{{t.val}}' >{{t.tipo}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+   						    <div *ngIf="permisos.invalid && (permisos.dirty || permisos.touched || usuarioForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="permisos.hasError('required')" >Seleccione un permiso</div>
+                			</div>  
+			    		</div> 
+			  		</div>
+			  		<ion-button type="submit" block>Agregar Usuario</ion-button> 
+		    	</form>
+
+	  </ion-card-content>	
+	</ion-card>
+	<ion-card  id="edicionUsuariosCard" class="tarjetas colapsar">	
+	  <ion-card-header  class="tarjetasAdmin" (click)="switch('edicionUsuariosCard')">
+	  	Editar Usuarios (staff)
+	  </ion-card-header>	
+	  <ion-card-content text-center>
+		    <ion-item >
+			    	<ion-label position="floating">
+			    		Selecciona la Empresa
+			    	</ion-label>
+		    		<ion-select [(ngModel)]="empresasEdicionUsr" (ionChange)="getUsuariosEmpresa(empresa.value)" name="empresa" #empresa="ngModel" interface="popover" required>
+				    <ion-select-option *ngFor="let empresa of empresas"  value='{{empresa.id}}'>{{empresa.nombre}}</ion-select-option>
+				  </ion-select>
+			    </ion-item>		
+	    		<ion-item *ngFor="let usuario of usuariosDeEmpresa">
+	    			<ion-label>
+	    				correo: {{usuario.correo}}
+	    			</ion-label>
+	    		<ion-button size="small" color="warning" (click)="seleccionarUsuarioAEditar(usuario)" ><ion-icon slot="start" name="md-create"></ion-icon>Editar</ion-button> 
+	    		<ion-button  size="small" color="danger" (click)="eliminarUsuario(usuario.id)"><ion-icon slot="start" name="md-trash"></ion-icon>Eliminar</ion-button> 
+    		</ion-item>
+    		<!-- edicion usuario -->
+		<div *ngIf="usuarioAEditar">
+	   		<div class="tituloContent">
+	    			Editar Usuario:
+    		</div>	
+		   	  <form #usuarioAEditarForm="ngForm" (ngSubmit)="editarUsuario(usuarioAEditarForm)" >
+			   		<div class="flexBox">
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Correo
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.correo" name="correo" type="email" #correoEditar="ngModel" required disabled></ion-input>
+						    </ion-item>
+	
+			    		</div>
+
+			    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Nombre
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.nombre" name="nombre" type="text" #nombreEditar="ngModel"  maxlength="50" required></ion-input>
+						    </ion-item>	
+						    <div *ngIf="nombreEditar.invalid && (nombreEditar.dirty || nombreEditar.touched || usuarioAEditarForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="nombreEditar.hasError('required')" >Nombre requerido</div>
+                			</div>     
+			    		</div>
+			    		<div  class="campoTexto">    
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Apellido
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.apellido" value="" name="apellido" maxlength="50" type="text" ></ion-input>
+						    </ion-item>
+			    		</div>
+			    		<div  class="campoNum">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Telefono
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.tel" value="" name="tel" maxlength="12" inputmode="tel" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+						    </ion-item>	
+			    		</div>
+			    		<div  class="campoNum">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Móvil
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.movil" name="movil" #movilEditar="ngModel" inputmode="tel" maxlength="12" minlength="7" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" required></ion-input>
+						    </ion-item>	
+						    <div *ngIf="movilEditar.invalid && (movilEditar.dirty || movilEditar.touched || usuarioAEditarForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="movilEditar.hasError('required')" >Móvil requerido</div>
+                            	<div *ngIf="movilEditar.hasError('minlength')" >El número es menor al minimo</div>
+                			</div>  
+			    		</div>
+			    		<div  class="campoTexto">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Dirección
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="usuarioAEditar.dir" value="" name="dir" maxlength="50" type="text"></ion-input>
+						    </ion-item>	
+			    		</div>
+			    		<div  class="campoSelec">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Empresa
+						    	</ion-label>
+					    		<ion-select [(ngModel)]="usuarioAEditar.empresa" name="empresa" #empresaUsuarioEditar="ngModel" interface="popover" required>
+							    <ion-select-option *ngFor="let empresa of empresas"  value='{{empresa.id}}'>{{empresa.nombre}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+						    <div *ngIf="empresaUsuarioEditar.invalid && (empresaUsuarioEditar.dirty || empresaUsuarioEditar.touched || usuarioAEditarForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="empresaUsuarioEditar.hasError('required')" >Seleccione una empresa</div>
+                			</div>  
+			    		</div>
+			    		<div  class="campoSelec">   
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Permisos
+						    	</ion-label>
+					    		<ion-select  [(ngModel)]="usuarioAEditar.permisos" name="permisos" #permisosEditar="ngModel"  interface="popover" required>
+					    	<!--  [disabled]="!usuarioAEditarForm.valid"		<ion-select-option >Seleccione</ion-select-option> -->
+							    	<ion-select-option *ngFor="let t of tiposUsuario" value='{{t.val}}' >{{t.val}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+   						    <div *ngIf="permisosEditar.invalid && (permisosEditar.dirty || permisosEditar.touched || usuarioAEditarForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="permisosEditar.hasError('required')" >Seleccione un permiso</div>
+                			</div>  
+			    		</div> 
+			  		</div>
+			  		<ion-button type="submit" block>Editar Usuario</ion-button> 
+		    	</form>
+		    </div>
+    		<!--  -->
+	  </ion-card-content>	
+	</ion-card>
+	<!-------------------- Empresas ------------------ -->
+	<ion-card id="emresasCard" class="tarjetas colapsar">	
+	  <ion-card-header   class="tarjetasAdmin" (click)="switch('emresasCard')">
+	  	Empresas 
+	  </ion-card-header>	
+	  <ion-card-content>
+	  	<div class="tituloContent">
+			Crear Empresa:
+		</div>	
+		<form #empresaForm="ngForm" (ngSubmit)="agregarEmpresa(empresaForm)" >
+	   		<div class="flexBox">
+	    		<div class="campoTexto"> 
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Nombre
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaNueva.nombre" name="nombre" type="text" #nombre="ngModel"  maxlength="50" required></ion-input>
+				    </ion-item>	
+				    <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || empresaForm.submitted)" class="errMensajeInput">
+                    	<div *ngIf="nombre.hasError('required')" >Nombre requerido</div>
+        			</div>     
+	    		</div>
+
+	    		<div  class="campoNum">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Telefono
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaNueva.tel" value="" name="tel"  maxlength="12" inputmode="tel" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+				    </ion-item>	
+	    		</div>
+	    		<div  class="campoNum">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Móvil
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaNueva.movil" #movil="ngModel" [value]="" name="movil" inputmode="tel" maxlength="12" minlength="7" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+				    </ion-item>	
+
+	    		</div>
+	    		<div  class="campoTexto">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Dirección
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaNueva.dir"  #dir="ngModel" value="" name="dir" maxlength="80" minlength="5" type="text" required></ion-input>
+				    </ion-item>	
+				    <div *ngIf="dir.invalid && (dir.dirty || dir.touched || empresaForm.submitted)" class="errMensajeInput">
+                    	<div *ngIf="dir.hasError('required')" >la direccion es requerida</div>
+                    	<div *ngIf="dir.hasError('minlength')" >La direccion es demasiado corta</div>
+        			</div> 
+	    		</div>
+	    		<div  class="campoSelec">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Tipo
+				    	</ion-label>
+			    		<ion-select [(ngModel)]="empresaNueva.tipo" name="tipo" #tipo="ngModel" interface="popover" required>
+					    <ion-select-option *ngFor="let tipo of tiposEmpresa"  value='{{tipo}}'>{{tipo}}</ion-select-option>
+					  </ion-select>
+				    </ion-item>	
+				    <div *ngIf="tipo.invalid && (tipo.dirty || tipo.touched || empresaForm.submitted)" class="errMensajeInput">
+                    	<div *ngIf="tipo.hasError('required')" >Seleccione un tipo de servicio</div>
+        			</div>  
+	    		</div>
+	  		</div>
+	  		<ion-button type="submit"  block>Crear Empresa</ion-button> 
+    	</form>
+	  </ion-card-content>	
+	</ion-card>
+	<!-- edicion de empresas -->
+	<ion-card id="emresasEditarCard" class="tarjetas colapsar">	
+	  <ion-card-header class="tarjetasAdmin" (click)="switch('emresasEditarCard')">
+	  	Editar Empresas 
+	  </ion-card-header>	
+	  <ion-card-content text-center>
+    	<ion-label position="floating">
+			    		Selecciona la Empresa
+    	</ion-label>
+		<ion-select   [(ngModel)]="empresaEditar"  placeholder="Seleccion" interface="popover">
+	    <ion-select-option *ngFor="let empresa of empresas"  [value]="empresa"  >{{empresa.nombre}}</ion-select-option>
+	   </ion-select>
+ 		<form *ngIf="empresaEditar" #empresaEditarForm="ngForm" (ngSubmit)="editarEmpresa(empresaEditarForm)" >
+	   		<div class="flexBox">
+	    		<div class="campoTexto"> 
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Nombre
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaEditar.nombre" name="nombre" type="text" #nombreEmpresa="ngModel"  maxlength="50" required></ion-input>
+				    </ion-item>	
+				    <div *ngIf="nombreEmpresa.invalid && (nombreEmpresa.dirty || nombreEmpresa.touched  || empresaEditar.submitted)" class="errMensajeInput">
+                    	<div *ngIf="nombreEmpresa.hasError('required')" >Nombre requerido</div>
+        			</div>     
+	    		</div>
+	    		<div  class="campoNum">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Telefono
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaEditar.tel" value="" name="tel"  maxlength="12" inputmode="tel" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+				    </ion-item>	
+	    		</div>
+	    		<div  class="campoNum">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Móvil
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaEditar.movil" name="movil" inputmode="tel" maxlength="12" minlength="7" type="number" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$" ></ion-input>
+				    </ion-item>	
+
+	    		</div>
+	    		<div  class="campoTexto">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Dirección
+				    	</ion-label>
+			    		<ion-input [(ngModel)]="empresaEditar.dir"  #dirEmpresa="ngModel" value="" name="dir" maxlength="80" minlength="5" type="text" required></ion-input>
+				    </ion-item>	
+				    <div *ngIf="dirEmpresa.invalid && (dirEmpresa.dirty || dirEmpresa.touched || empresaEditar.submitted)" class="errMensajeInput">
+                    	<div *ngIf="dirEmpresa.hasError('required')" >la direccion es requerida</div>
+                    	<div *ngIf="dirEmpresa.hasError('minlength')" >La direccion es demasiado corta</div>
+        			</div> 
+	    		</div>
+	    		<div  class="campoSelec">   
+				    <ion-item >
+				    	<ion-label position="floating">
+				    		Tipo
+				    	</ion-label>
+			    		<ion-select [(ngModel)]="empresaEditar.tipo" name="tipo" #tipoEmpresa="ngModel" interface="popover" required>
+					    <ion-select-option *ngFor="let tipo of tiposEmpresa"  [value]="tipo">{{tipo}}</ion-select-option>
+					  </ion-select>
+				    </ion-item>	
+				    <div *ngIf="tipoEmpresa.invalid && (tipoEmpresa.dirty || tipoEmpresa.touched || empresaEditar.submitted)" class="errMensajeInput">
+                    	<div *ngIf="tipoEmpresa.hasError('required')" >Seleccione una tipo de servicio</div>
+        			</div>  
+	    		</div>
+	  		</div>
+	  		<ion-button type="submit"  block>Editar Empresa</ion-button> 
+    	</form> 
+	  </ion-card-content>	
+	</ion-card>
+</ion-content>

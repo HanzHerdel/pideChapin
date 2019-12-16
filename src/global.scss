@@ -9,3 +9,62 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+.ion-color-amarillo {
+--ion-color-base: var(--ion-color-amarillo) !important;
+--ion-color-base-rgb: var(--ion-color-amarillo-rgb) !important;
+--ion-color-contrast: var(--ion-color-amarillo-contrast) !important;
+--ion-color-contrast-rgb: var(--ion-color-amarillo-contrast-rgb) !important;
+--ion-color-shade: var(--ion-color-amarillo-shade) !important;
+--ion-color-tint: var(--ion-color-amarillo-tint) !important;
+}
+.nombreEmpresa{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: larger;
+    color: gray;
+}
+.tarjetas{
+	transition: all .5s ease-in; 
+ 	max-height: 4000px;
+
+}
+.colapsar{
+	transition: all .2s ease-out; 
+	max-height:38px;
+
+}
+.tituloContent{
+text-align: right;
+    margin: 0 30px;
+    border-bottom: 4px solid gray;
+}
+.tarjetasAdmin{
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+    padding: 7px;
+    border-bottom: 1px solid gray;
+    margin: 4px 4px;
+}
+.flexBox{
+	display: flex;
+	flex-wrap:wrap;
+
+}
+.campoTexto{
+	padding: 8px;
+    min-width:120px;
+    max-width: 250px;
+}
+.campoSelec{
+	padding: 8px;
+    max-width:240px;
+    min-width: 180px;
+}
+.campoNum{
+	padding: 8px;
+    max-width:150px;
+}
+.errMensajeInput{    
+    text-align: center;
+    font-size: 85%;
+}

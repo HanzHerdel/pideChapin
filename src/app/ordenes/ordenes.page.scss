@@ -1,0 +1,115 @@
+.contenedorDeOpciones{
+	display: flex;
+	flex-wrap:wrap;
+}
+.contenedorDeRestaurantes{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 15px 7px 0 7px;
+}
+.restauranteOpcion{
+    padding: 8px;
+    margin: 2px;
+    background-color: white;
+    color: #ff8b13;
+    font-size: medium;
+    border-radius: 6px;
+    min-width: 180px;
+    max-width: 180px;
+    border: 1px solid #e0801c;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+.restauranteOpcion:hover{
+    background-color: #ff8b13;
+    color: white;
+    font-size: 110%;
+    border:none;
+}
+.restauranteSeleccionado{
+    background-color: #f8ad5e;
+    color: #ffffff;
+    border:none;
+}
+.opcionSeleccionada{
+    color: deepskyblue !important;
+    border: 1px solid deepskyblue !important;
+    font-size: 110% !important;
+    background-color: white !important;
+}
+.opcion{
+    padding: 5px;
+    background-color: deepskyblue;
+    color: white;
+    //font-family: serif;
+    font-size: medium;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+.opcion:hover{
+	background-color: #05a2d7;
+}
+.contenedorDeItems{
+	display: flex;
+    flex-wrap: wrap;
+}
+.items{
+	width: 300px;
+	height: fit-content;
+    border: 1px solid #8080804a;
+    border-radius: 6px;
+    padding: 5px;
+    margin: 5px;
+}
+.contenedorImagen{
+	display: inherit;
+    float: left;
+	max-width: 130px; 
+	min-width: 100px;
+/* 	max-height: 100px;
+	min-height:120px; */
+	height:auto;
+	padding: 5px;
+}
+.contenedorEnd{
+	float: right;
+}
+.precio{
+	display: inline
+}
+.agregar{
+    font-size: 200%;
+    width: 32px;
+    height: 32px;
+    background: #cffca1;
+
+}
+.precioItem{
+	margin-top: 4px;
+    float: right;
+	display: inline
+}
+.agregarItem{
+	margin-top: 4px;
+    float: right;
+    font-size: 200%;
+    width: 32px;
+    height: 32px;
+    background: #cffca1;
+
+}
+.quitar{
+    font-size: 200%;
+    width: 32px;
+    height: 32px;
+    background: #ff6666;
+}
+.imagenItem{
+ 	border-radius: 15px;
+}
+.textoItem{
+	overflow-wrap: normal;
+}
+.total{
+	text-align: center;
+}

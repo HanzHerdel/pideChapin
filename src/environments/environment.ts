@@ -3,7 +3,33 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  firebase:  {
+    apiKey: "AIzaSyDXqaxhRAAQnfBUUoQQdnh0euNSDG2OGk8",
+    authDomain: "pidechapin-qtech.firebaseapp.com",
+    databaseURL: "https://pidechapin-qtech.firebaseio.com",
+    projectId: "pidechapin-qtech",
+    storageBucket: "pidechapin-qtech.appspot.com",
+    messagingSenderId: "731163401688"
+  },
+  
+  tiposUsuarioAdmin:[{tipo:'Moderador',val:'moderador'},
+          {tipo:'Usuario',val:'usuario'},
+          {tipo:'Repartidor',val:'repartidor',},
+          ],
+  tiposEmpresaAdmin:['restaurante', 'otro'],
+
+  tiposUsuarioModerador:[
+          {tipo:'Moderador',val:'moderador'},
+          {tipo:'Usuario',val:'usuario'}
+          ]
+          ,
+  tiposEmpresaModerador:['restaurante', 'otro'],
+  tiposItems:['desayuno','almuerzo','boquita','entremés','bebida','postre','refaccion','cena','otro'],
+  estadosDeOrden:['en espera','confirmado','en camino','entregado'],
+  tiempoBajo:20,
+  tiempoMedio:30,
 };
 
 /*

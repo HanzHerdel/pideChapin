@@ -1,0 +1,19 @@
+<ion-content class="content" no-padding> 
+    <div class="bg" text-center>
+        <div class="head" text-center>
+            <h1>PideChapin</h1>
+            <h5>----------</h5>
+        </div>
+        <div class="inputs">
+            <ion-item>
+                <ion-label floating>Correo</ion-label>
+                <ion-input [(ngModel)]="usuario" type="text"></ion-input>
+            </ion-item>
+            <ion-item class="pass">
+                <ion-label floating>Contraseña</ion-label>
+                <ion-input [(ngModel)]="pass" type="password"></ion-input>
+            </ion-item>
+            <ion-button (click)="login()" ><b>Acceder</b></ion-button>
+        </div>         
+    </div>    
+</ion-content>

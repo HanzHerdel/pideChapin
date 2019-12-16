@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+					<ion-buttons slot="start">
+				<ion-menu-button></ion-menu-button>
+			</ion-buttons>
+    <ion-title>Ordenes Activas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div *ngFor="let orden of ordenes">	
+	<ion-card>
+	  <ion-card-content class="ion-text-capitalize">
+			<div>						
+				<div class="divTiempo" [ngClass]=" (orden.transcurrido<tiempoBajo) ? 'tiempoBajo' : ((orden.transcurrido<tiempoMedio) ? 'tiempoMedio' : 'tiempoAlto')"  >
+					<label class="etiquetaTiempo">							
+						Tiempo transcurrido:
+					</label>						
+					{{orden.transcurrido}} minutos
+				</div>
+			</div>	
+			<div class="ion-text-wrap">
+
+				<div class="ion-text-capitalize">
+					<div class="datosOrden">
+						<label>						
+							<span><b>Nombre:</b> {{orden.nombre}}</span> 
+							<span><b>Dirección:</b> {{orden.direccion}}</span>
+							<span><b>Comentarios:</b> {{orden.comentarios}} </span>
+							<span><b>Tel:</b> {{orden.tel}}</span>
+						</label>
+				  	</div>				
+					<div class="ion-float-sm-{left}">
+						<div >						
+							<p class="detalleOrden" *ngFor="let item of orden.items">
+								• {{item.cantidad}}x {{item.nombre}} Q.{{item.cantidad * item.valor}}
+							</p>
+						</div>
+						<div class="flexBox totalOrden">								
+							<div class="totalItem">	
+								<ion-label>									
+									Total Q.{{orden.total}}
+								</ion-label>
+							</div>
+							<div style="display: inherit;">
+							 Estado: &nbsp; 			
+								<ion-select no-padding [(ngModel)]="orden.estado" (ionChange)="estadoSeleccionado(orden)" class="estado"
+									 interface="alert" ok-text="Cambiar" [disabled]="!tienePermisos()" cancel-text="Cancelar">
+							    	<ion-select-option *ngFor="let estado of estados" value='{{estado}}' >{{estado}}</ion-select-option>
+							  </ion-select>
+						    	<!-- 	Estado: {{orden.estado}} -->
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+			  </ion-card-content>
+		</ion-card>	
+	</div>
+</ion-content>

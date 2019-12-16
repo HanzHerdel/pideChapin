@@ -1,0 +1,197 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Miscelánea</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-card  id="agregarCard" class="tarjetas colapsar" >	
+	  <ion-card-header class="tarjetasAdmin"(click)="switch('agregarCard')">
+	  	Agregar
+	  </ion-card-header>			
+	  <ion-card-content text-center>
+    		<div class="tituloContent">
+    			Agregar Entrada:
+    		</div>	
+		   	  <form #itemForm="ngForm" (ngSubmit)="crearItem(itemForm)" >
+			   		<div class="flexBox">
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Nombre
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="item.nombre" name="nombre" type="text" #nombre="ngModel" required minLength="5" maxLength="50"></ion-input>
+						    </ion-item>
+					    		<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="nombre.hasError('minLenght')" >El nombre es demasiado corto</div>
+                            	<div *ngIf="nombre.hasError('required')" >El nombre es obligatorio</div>
+                        		</div>	
+			    		</div>
+			    		<div  class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Descripción
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="item.descripcion" name="descripcion" type="text" #descripcion="ngModel" required minLength="5" maxLength="125"></ion-input>
+						    </ion-item>
+    				    		<div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="descripcion.hasError('minLenght')" >Descripcion es demasiada corta</div>
+                            	<div *ngIf="descripcion.hasError('required')" >La descripcion es obligatoria</div>
+                        		</div>	
+			    		</div>
+			    		<div class="campoSelec">
+			    			<ion-item >
+			    				<ion-label position="floating">
+			    					Valor
+			    				</ion-label>
+			    				<ion-input [(ngModel)]="item.valor" name="valor" type="number" #valor="ngModel" required min="1"></ion-input>
+			    			</ion-item>
+    				    		<div *ngIf="valor.invalid && (valor.dirty || valor.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="valor.hasError('required')" >el valor es obligatorio</div>
+                        		</div>	
+			    		</div>
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Tipo
+						    	</ion-label>
+					    		<ion-select [(ngModel)]="item.tipo" name="tipo"  #tipo="ngModel"  interface="popover" required>
+							    	<ion-select-option *ngFor="let tipo of tiposItems" value='{{tipo}}' >{{tipo}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+			    		</div>	
+			    		<div  class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Comentarios
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="item.comentarios" name="comentarios" type="text" #comentarios="ngModel" minLength="5" maxLength="125"></ion-input>
+						    </ion-item>
+
+			    		</div>   	    		
+			    		<div  class="campoSelec"> 
+			    			<ion-item >
+			    				<ion-label position="stacked">
+			    					Imagen
+			    				</ion-label>
+			    			<ion-button for="selectorImagen">
+			    				<label for="selectorImagen">{{nombreImg}}</label>
+						 		<input id="selectorImagen" style="opacity: 0; display: inherit;"  [(ngModel)]="imagen" name="img" #img="ngModel" type="file" (change)="imgNuevoItemSeleccionada($event)" accept="image/png, image/jpeg" >						 		
+			    			</ion-button>    			    
+					    	</ion-item>
+			    		</div>
+
+			  		</div>
+			  		<ion-button type="submit" block>Agregar</ion-button> 
+		    	</form>
+
+	  </ion-card-content>	
+	</ion-card>
+	<ion-card  id="editarCard" class="tarjetas colapsar" >	
+	  <ion-card-header class="tarjetasAdmin"(click)="switch('editarCard')">
+	  	Editar
+	  </ion-card-header>			
+	  <ion-card-content text-center>
+    		<ion-item *ngFor="let item of items">
+	    			<ion-label>
+	    				Nombre: {{item.nombre}}
+	    			</ion-label>
+	    		<ion-button size="small" color="warning" (click)="seleccionarItemAEditar(item)" ><ion-icon slot="start" name="md-create"></ion-icon>Editar</ion-button> 
+	    		<ion-button  size="small" color="danger" (click)="eliminarItemConfirmar(item.id)"><ion-icon slot="start" name="md-trash"></ion-icon>Eliminar</ion-button> 
+    		</ion-item>
+    		<div *ngIf="itemAEditar">
+    		<div class="tituloContent">
+    			Editar Entrada:
+    		</div>	
+		   	  <form #editarItemForm="ngForm" (ngSubmit)="editar(editarItemForm)" >
+			   		<div class="flexBox">
+		   				<div *ngIf="itemAEditar.urlImg.length > 0" class="campoSelec"> 
+		   					<ion-label>
+		   						Imagen Actual
+		   					</ion-label>
+		   					<img src="{{itemAEditar.urlImg}}" style="width: 450px;max-width: 100%;max-height: 450px; border-radius: 15px">
+		   				</div>
+		   				<div *ngIf="!itemAEditar.urlImg.length > 0" class="campoSelec"> 
+		   					<ion-label>
+		   						Sin Imagen
+		   					</ion-label>
+		   				</div>
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Nombre
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="itemAEditar.nombre" name="nombre" type="text" #nombre="ngModel" required minLength="5" maxLength="50"></ion-input>
+						    </ion-item>
+					    		<div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="nombre.hasError('minLenght')" >El nombre es demasiado corto</div>
+                            	<div *ngIf="nombre.hasError('required')" >El nombre es obligatorio</div>
+                        		</div>	
+			    		</div>
+			    		<div  class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Descripción
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="itemAEditar.descripcion" name="descripcion" type="text" #descripcion="ngModel" required minLength="5" maxLength="125"></ion-input>
+						    </ion-item>
+    				    		<div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="descripcion.hasError('minLenght')" >Descripcion es demasiada corta</div>
+                            	<div *ngIf="descripcion.hasError('required')" >La descripcion es obligatoria</div>
+                        		</div>	
+			    		</div>
+			    		<div class="campoSelec">
+			    			<ion-item >
+			    				<ion-label position="floating">
+			    					Valor
+			    				</ion-label>
+			    				<ion-input [(ngModel)]="itemAEditar.valor" name="valor" type="number" #valor="ngModel" required min="1"></ion-input>
+			    			</ion-item>
+    				    		<div *ngIf="valor.invalid && (valor.dirty || valor.touched || itemForm.submitted)" class="errMensajeInput">
+                            	<div *ngIf="valor.hasError('required')" >el valor es obligatorio</div>
+                        		</div>	
+			    		</div>
+		   	    		<div class="campoTexto"> 
+						    <ion-item >
+						    	<ion-label position="floating">
+						    		Tipo
+						    	</ion-label>
+					    		<ion-select [(ngModel)]="itemAEditar.tipo" name="tipo"  #tipo="ngModel"  interface="popover" required>
+							    	<ion-select-option *ngFor="let tipo of tiposItems" value='{{tipo}}' >{{tipo}}</ion-select-option>
+							  </ion-select>
+						    </ion-item>	
+			    		</div>	
+
+			    		<div  class="campoSelec"> 
+			    			 <ion-item >  
+						    	<ion-label position="floating">
+						    		Comentarios
+						    	</ion-label>
+					    		<ion-input [(ngModel)]="itemAEditar.comentarios" name="comentarios" type="text" #comentarios="ngModel" minLength="5" maxLength="125"></ion-input>
+						    </ion-item>
+
+			    		</div>   	    		
+			    		<div  class="campoSelec"> 
+			    			<ion-item >
+			    				<ion-label position="stacked">
+			    					Nueva Imagen
+			    				</ion-label>
+			    			<ion-button for="imagenEditar">
+			    				<label for="imagenEditar">{{nombreImgEditar}}</label>
+						 		<input id="imagenEditar" style="opacity: 0; display: inherit;"  [(ngModel)]="imagenEditar" name="img" #img="ngModel" type="file" (change)="imgEditarItemSeleccionada($event)" accept="image/png, image/jpeg" >
+						 		
+			    			</ion-button>    			    
+					    	</ion-item>
+			    		</div>
+
+			  		</div>
+			  		<ion-button type="submit" block>Editar</ion-button> 
+		    	</form>
+		    </div>
+	  </ion-card-content>	
+	</ion-card>
+
+</ion-content>
